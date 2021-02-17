@@ -92,6 +92,8 @@ public class Dispatcher extends Stopable {
 		Logger.log("onConnect:" + msg.toString());
 
 		storage.addClientSession(user, connection);
+		
+		System.out.println("Client sessions: " + storage.getSessions().size());
 
 	}
 
@@ -103,6 +105,8 @@ public class Dispatcher extends Stopable {
 		Logger.log("onDisconnect:" + msg.toString());
 
 		storage.removeClientSession(user);
+		
+		System.out.println("Client sessions: " + storage.getSessions().size());
 
 	}
 
@@ -114,6 +118,7 @@ public class Dispatcher extends Stopable {
 		// the topic is contained in the create topic message
 		String topic = msg.getTopic();
 		storage.createTopic(topic);
+		System.out.println("Topics: " + storage.getTopics().size());
 
 	}
 
@@ -125,6 +130,7 @@ public class Dispatcher extends Stopable {
 		// the topic is contained in the delete topic message
 		String topic = msg.getTopic();
 		storage.deleteTopic(topic);
+		System.out.println("Topics: " + storage.getTopics().size());
 	}
 
 	public void onSubscribe(SubscribeMsg msg) {
@@ -136,6 +142,7 @@ public class Dispatcher extends Stopable {
 		String topic = msg.getTopic();
 		String user = msg.getUser();
 		storage.addSubscriber(user, topic);
+		System.out.println("Subscribers: " + topic + ": " +  storage.getSubscribers(topic).size());
 
 	}
 
@@ -148,6 +155,7 @@ public class Dispatcher extends Stopable {
 		String topic = msg.getTopic();
 		String user = msg.getUser();
 		storage.removeSubscriber(user, topic);
+		System.out.println("Subscribers: " + topic + ": " +  storage.getSubscribers(topic).size());
 	}
 
 	public void onPublish(PublishMsg msg) {

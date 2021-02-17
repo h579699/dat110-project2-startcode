@@ -6,10 +6,12 @@ public class TemperatureSensor {
 
 	public int read() {
 
-		long seconds = System.currentTimeMillis();
-
-		double temp = RANGE * Math.sin(seconds / 1000);
-
-		return (int) Math.ceil(temp);
+//		long seconds = System.currentTimeMillis();
+//
+//		double temp = RANGE * Math.sin(seconds / 1000);
+//
+//		return (int) Math.ceil(temp);
+		
+		return (int) (Math.random()*RANGE + 0.5);
 	}
 }
