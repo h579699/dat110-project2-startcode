@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import no.hvl.dat110.common.TODO;
+import no.hvl.dat110.messages.Message;
 import no.hvl.dat110.common.Logger;
 import no.hvl.dat110.messagetransport.Connection;
 
@@ -19,10 +20,16 @@ public class Storage {
 	// maps from user to corresponding client session object
 	
 	protected ConcurrentHashMap<String, ClientSession> clients;
+	
+	// buffer for meldinger til subscribers som er disconnected
+	// mapper bruker til buffrede meldinger
+	
+	protected ConcurrentHashMap<String, Set<Message>> buffer;
 
 	public Storage() {
 		subscriptions = new ConcurrentHashMap<String, Set<String>>();
 		clients = new ConcurrentHashMap<String, ClientSession>();
+		buffer = new ConcurrentHashMap<String, Set<Message>>();
 	}
 
 	public Collection<ClientSession> getSessions() {
@@ -62,7 +69,8 @@ public class Storage {
 	public void removeClientSession(String user) {
 
 		// TODO: remove client session for user from the storage
-		clients.remove(user);
+		ClientSession session = getSession(user);
+		clients.remove(user, session);
 		
 	}
 
@@ -91,5 +99,19 @@ public class Storage {
 
 		// TODO: remove the user as subscriber to the topic
 		subscriptions.get(topic).remove(user);
+	}
+	
+	public void createBuffer(String user) {
+		buffer.put(user, new HashSet<Message> ());
+	
+	}
+	
+	public void addBufferMessage(String user, Message msg) {
+		buffer.get(user).add(msg);
+		
+	}
+
+	public Set<Message> getBufferedMessages(String user) {
+		return buffer.get(user);
 	}
 }

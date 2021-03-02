@@ -94,6 +94,13 @@ public class Dispatcher extends Stopable {
 		storage.addClientSession(user, connection);
 		
 		System.out.println("Client sessions: " + storage.getSessions().size());
+		
+		//sjekker etter buffrede meldinger
+		Set<Message> bufferedMessages = storage.getBufferedMessages(user);
+		if(bufferedMessages != null) {
+			ClientSession client = storage.getSession(user);
+			bufferedMessages.forEach(mld -> client.send(mld));
+		}
 
 	}
 
@@ -105,6 +112,8 @@ public class Dispatcher extends Stopable {
 		Logger.log("onDisconnect:" + msg.toString());
 
 		storage.removeClientSession(user);
+		
+		storage.createBuffer(user);
 		
 		System.out.println("Client sessions: " + storage.getSessions().size());
 
@@ -169,7 +178,14 @@ public class Dispatcher extends Stopable {
 		
 		Set<String> subscribers = storage.getSubscribers(topic);
 		
-		subscribers.forEach(sub -> storage.getSession(sub).send(msg));
+		subscribers.forEach(sub -> {
+			ClientSession client = storage.getSession(sub);
+			if(client != null) {
+				client.send(msg);
+			}else {
+				storage.addBufferMessage(sub, msg);
+			}
+		});
 
 	}
 }

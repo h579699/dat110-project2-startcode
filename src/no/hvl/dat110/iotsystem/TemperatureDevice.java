@@ -35,6 +35,12 @@ public class TemperatureDevice {
 		}
 		
 		// - disconnect from the broker
+		try {
+			Thread.sleep(4000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		broker.disconnect();
 
 		// TODO - end
