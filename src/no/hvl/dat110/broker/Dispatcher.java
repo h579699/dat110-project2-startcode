@@ -116,6 +116,7 @@ public class Dispatcher extends Stopable {
 		storage.createBuffer(user);
 		
 		System.out.println("Client sessions: " + storage.getSessions().size());
+		
 
 	}
 
