@@ -95,7 +95,7 @@ public class Dispatcher extends Stopable {
 		
 		System.out.println("Client sessions: " + storage.getSessions().size());
 		
-		//sjekker etter buffrede meldinger
+		//sjekker etter buffrede meldinger for bruker
 		Set<Message> bufferedMessages = storage.getBufferedMessages(user);
 		if(bufferedMessages != null) {
 			ClientSession client = storage.getSession(user);
