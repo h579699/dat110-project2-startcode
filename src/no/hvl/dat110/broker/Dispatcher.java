@@ -101,7 +101,6 @@ public class Dispatcher extends Stopable {
 			ClientSession client = storage.getSession(user);
 			bufferedMessages.forEach(mld -> client.send(mld));
 		}
-
 	}
 
 	// called by dispatch upon receiving a disconnect message
